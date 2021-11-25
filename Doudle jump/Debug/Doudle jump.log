@@ -1,0 +1,18 @@
+﻿  Source.cpp
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(16,28): warning C4244: return: преобразование "LONG" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(17,28): warning C4244: return: преобразование "LONG" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(22,35): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(22,61): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(23,34): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(23,60): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(40,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(109,21): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(186,39): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(186,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(220,21): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(278,21): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(285,21): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(307,39): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(307,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(309,11): warning C4244: =: преобразование "float" в "int", возможна потеря данных
+  Doudle jump.vcxproj -> C:\Users\maxim\source\repos\Doudle jump\Debug\Doudle jump.exe
