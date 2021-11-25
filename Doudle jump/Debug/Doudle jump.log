@@ -1,23 +1,86 @@
 ﻿D:\Visual Studio\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(491,5): warning MSB8028: промежуточный каталог (Debug\) содержит файлы, которые используются совместно с другим проектом (Doudle jump.vcxproj).  Это может привести к ошибкам очистки и перестроения.
-  Source.cpp
+  Entity.cpp
 C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(16,28): warning C4244: return: преобразование "LONG" в "float", возможна потеря данных
 C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(17,28): warning C4244: return: преобразование "LONG" в "float", возможна потеря данных
 C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(22,35): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
 C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(22,61): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
 C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(23,34): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
 C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(23,60): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
-C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(40,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(109,21): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(186,39): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(186,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(220,21): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(278,21): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(285,21): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(309,40): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(309,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(311,12): warning C4244: =: преобразование "float" в "int", возможна потеря данных
-C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(315,12): warning C4244: =: преобразование "float" в "int", возможна потеря данных
-C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(326,9): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
-C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(327,39): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(327,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.cpp(5,14): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.cpp(6,17): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.cpp(7,13): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.cpp(8,18): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+  Hero.cpp
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(16,28): warning C4244: return: преобразование "LONG" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(17,28): warning C4244: return: преобразование "LONG" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(22,35): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(22,61): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(23,34): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(23,60): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+  Platform.cpp
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(16,28): warning C4244: return: преобразование "LONG" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(17,28): warning C4244: return: преобразование "LONG" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(22,35): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(22,61): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(23,34): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(23,60): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+  Source.cpp
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x4e3, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x4e5, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x4e6, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x4e9, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x4ed, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x4f0, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x4f4, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x4f7, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x4fa, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x4fe, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x55a, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x55c, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x55f, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x8a1, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x8a3, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x8a6, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x8a7, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x8aa, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x8ad, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0x8b0, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0xc9a, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0xc9d, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0xca1, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0xca4, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0xca7, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0xcaa, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0xcae, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0xcb1, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0xed5, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0xed8, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0xedb, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0xede, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0xee1, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0xee4, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0xee8, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(1,1): warning C4828: Файл содержит знак, начинающийся со смещения 0xeeb, который является недопустимым в текущей исходной кодировке (кодовая страница 65001).
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(16,28): warning C4244: return: преобразование "LONG" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(17,28): warning C4244: return: преобразование "LONG" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(22,35): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(22,61): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(23,34): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(23,60): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(47,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(122,21): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(211,39): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(211,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(239,36): warning C4244: +=: преобразование "float" в "unsigned long", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(246,21): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(297,21): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(304,21): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(328,40): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(328,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(330,12): warning C4244: =: преобразование "float" в "int", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(334,12): warning C4244: =: преобразование "float" в "int", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(345,9): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(346,39): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(346,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+  Создание кода...
   Doudle jump.vcxproj -> C:\Users\maxim\source\repos\Doudle jump\Debug\Doodle_jump.exe

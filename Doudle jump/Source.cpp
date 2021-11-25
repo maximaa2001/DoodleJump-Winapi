@@ -1,14 +1,20 @@
 #include "Hero.h"
+#include <locale.h>
 #include "Platform.h"
 #include <gdiplus.h>
 #include <time.h>
 #include <vector>
+#include <sstream>
+#include <atlstr.h>
+#include <atlconv.h>
+#include <atlbase.h>
 #define FON_IMAGE L"image/fon.jpg"
 #define WIDTH 450
 #define HEIGHT 700
 #define GRAVITY_Y 1
 #define START_COUNT_PLATFORMS 12
 
+//#pragma execution_character_set("utf-8")
 #pragma comment(lib, "gdiplus.lib")
 using namespace Gdiplus;
 using namespace std;
@@ -20,6 +26,8 @@ UINT moveHero(HWND hWnd);
 void initPlatforms(vector<Platform*>& platforms);
 UINT movePlatform(HWND hWnd);
 void generateNewPlatforms();
+void setScore();
+string UTF8_to_CP1251(string const& utf8);
 
 
 MSG msg;
@@ -33,7 +41,6 @@ Platform* platformJumped;
 //Hero entity(225.0f, 600.0f, 50.0f, 48.0f, NULL);
 
 int CALLBACK wWinMain(HINSTANCE hInstance, HINSTANCE prev, PWSTR szCmdLine, int nCndShow) {
-
 	GdiplusStartupInput gdiplusStartupInput; // Связано с загрузкой картинки
 	ULONG_PTR gdiplusToken;
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL); // Включаем GDI+
@@ -78,6 +85,12 @@ HANDLE hold;
 
 float mouseX;
 float sx, sy;
+HFONT font;
+HFONT font2 = CreateFont(30, 18, 0, 0, 700, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, VARIABLE_PITCH, L"Times New Roman");
+static char text[2] = { ' ','\0' };
+const CHAR* score = "";
+unsigned long currentScore = 0;
+string stringScore;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message)
@@ -112,6 +125,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		
 		DrawImage(hdcMem, hero.getRect(), hero.getImage());
 
+		font = (HFONT)SelectObject(hdcMem, font2);
+		SetTextColor(hdcMem, RGB(255, 0, 0));
+		SetBkMode(hdcMem, TRANSPARENT);
+
+		setScore();
+		
+		TextOutA(hdcMem, 10, 0, score, strlen(score));
+
+
+		
+
 	//	FillRect(hdcMem, &entity.getRect(), (HBRUSH)GetStockObject(BLACK_BRUSH));
 		
 
@@ -121,6 +145,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		*/
 		BitBlt(hdc, 0, 0, rect.right, rect.bottom, hdcMem, 0, 0, SRCCOPY);
 		SelectObject(hdcMem, hold);
+		SelectObject(hdcMem, font);
 		DeleteObject(hbmMem);
 		DeleteObject(hdcMem);
 
@@ -209,10 +234,11 @@ UINT moveHero(HWND hWnd) {
 			}
 		}
 		else {
-			
 			hero.moveRect(hero.getX(), hero.getY() - (hero.getSpeed()));
+			if (hero.getIsMovePlatform()) {
+				currentScore += hero.getSpeed();
+			}
 			hero.setSpeed(hero.getSpeed() - GRAVITY_Y);
-	
 		}
 	}
 	else
@@ -264,13 +290,6 @@ UINT moveHero(HWND hWnd) {
 }
 
 UINT movePlatform(HWND hWnd) {
-	/*int y = (platform)->getY();
-	for (int i = 0; i < platforms.size(); i++) {
-		if (platforms[i]->getY() >= y) {
-			delete platforms[i];
-			platforms.erase(platforms.begin() + i);
-		}
-	}*/
 	
 	if (platformJumped->getY() + platformJumped->getHeight() < HEIGHT - platformJumped->getHeight() - 30) {
 		hero.setY(hero.getY() + 10);
@@ -326,4 +345,28 @@ void generateNewPlatforms() {						// int y = min + (rand() % ((max - min) + 1))
 		int y = -area + rand() % (int)((0 + area) + 1);
 		platforms.push_back(new Platform(x, y, 68.0f, 15.0f, L"image/platform.png"));
 	}
+}
+
+void setScore() {
+	stringScore = to_string(currentScore);
+	score = stringScore.c_str();
+}
+
+
+string UTF8_to_CP1251(string const& utf8)
+{
+	if (!utf8.empty())
+	{
+		int wchlen = MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), utf8.size(), NULL, 0);
+		if (wchlen > 0 && wchlen != 0xFFFD)
+		{
+			std::vector<wchar_t> wbuf(wchlen);
+			MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), utf8.size(), &wbuf[0], wchlen);
+			std::vector<char> buf(wchlen);
+			WideCharToMultiByte(1251, 0, &wbuf[0], wchlen, &buf[0], wchlen, 0, 0);
+
+			return std::string(&buf[0], wchlen);
+		}
+	}
+	return std::string();
 }
