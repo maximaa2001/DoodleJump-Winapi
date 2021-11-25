@@ -204,7 +204,7 @@ UINT moveHero(HWND hWnd) {
 				hero.setIsMovePlatform(false);
 				KillTimer(hWnd, 1);
 				generateNewPlatforms();
-				SetTimer(hWnd, 2, 10, (TIMERPROC)&movePlatform);
+				SetTimer(hWnd, 2, 15, (TIMERPROC)&movePlatform);
 		
 			}
 		}
@@ -272,7 +272,7 @@ UINT movePlatform(HWND hWnd) {
 		}
 	}*/
 	
-	if (platformJumped->getY() + platformJumped->getHeight() < HEIGHT - platformJumped->getHeight() - 20) {
+	if (platformJumped->getY() + platformJumped->getHeight() < HEIGHT - platformJumped->getHeight() - 30) {
 		hero.setY(hero.getY() + 10);
 
 		for (int i = 0; i < platforms.size(); i++) {
@@ -296,23 +296,34 @@ UINT movePlatform(HWND hWnd) {
 
 void generateNewPlatforms() {						// int y = min + (rand() % ((max - min) + 1));
 	float platf_y = platformJumped->getY();
-	float area = HEIGHT - platf_y;
+
+	float area = HEIGHT - platf_y - platformJumped->getHeight() - 40;
 	int count = (int)area / 100;
 	int minH = -100; // min = HEIGHT - 180 max = HEIGHT
 	int maxH = 0;
-
-	for (int i = 0; i < count + 2; i++) {
-		int x = rand() % (int)(WIDTH - platform.getWidth());
-		int y = minH + rand() % (int)((maxH - minH) + 1);
-		platforms.push_back(new Platform(x, y, 68.0f, 15.0f, L"image/platform.png"));
-		if (minH - 100 < area) {
-			minH = -area;
-			maxH = 0;
-		}
-		else {
-			maxH = minH;
-			minH = minH - 100;
+	
+	if (area >= 100) {
+		for (int i = 0; i < count + 1; i++) {
+			int x = rand() % (int)(WIDTH - platform.getWidth());
+			int y = minH + rand() % (int)((maxH - minH) + 1);
+			platforms.push_back(new Platform(x, y, 68.0f, 15.0f, L"image/platform.png"));
+			if (minH - 100 < area) {
+				minH = -area;
+				maxH = minH;
+			}
+			else if (minH == -area) {
+				minH = -area;
+				maxH = 0;
+			}
+			else {
+				maxH = minH;
+				minH = minH - 100;
+			}
 		}
 	}
-	
+	else{
+		int x = rand() % (int)(WIDTH - platform.getWidth());
+		int y = -area + rand() % (int)((0 + area) + 1);
+		platforms.push_back(new Platform(x, y, 68.0f, 15.0f, L"image/platform.png"));
+	}
 }

@@ -1,4 +1,5 @@
-﻿  Source.cpp
+﻿D:\Visual Studio\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(491,5): warning MSB8028: промежуточный каталог (Debug\) содержит файлы, которые используются совместно с другим проектом (Doudle jump.vcxproj).  Это может привести к ошибкам очистки и перестроения.
+  Source.cpp
 C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(16,28): warning C4244: return: преобразование "LONG" в "float", возможна потеря данных
 C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(17,28): warning C4244: return: преобразование "LONG" в "float", возможна потеря данных
 C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Entity.h(22,35): warning C4244: =: преобразование "float" в "LONG", возможна потеря данных
@@ -12,7 +13,11 @@ C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(186,36): warning 
 C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(220,21): warning C4018: <: несоответствие типов со знаком и без знака
 C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(278,21): warning C4018: <: несоответствие типов со знаком и без знака
 C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(285,21): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(307,39): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(307,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(309,11): warning C4244: =: преобразование "float" в "int", возможна потеря данных
-  Doudle jump.vcxproj -> C:\Users\maxim\source\repos\Doudle jump\Debug\Doudle jump.exe
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(309,40): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(309,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(311,12): warning C4244: =: преобразование "float" в "int", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(315,12): warning C4244: =: преобразование "float" в "int", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(326,9): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(327,39): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\maxim\source\repos\Doudle jump\Doudle jump\Source.cpp(327,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+  Doudle jump.vcxproj -> C:\Users\maxim\source\repos\Doudle jump\Debug\Doodle_jump.exe
