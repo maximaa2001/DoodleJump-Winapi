@@ -1,20 +1,20 @@
 #include "Hero.h"
 #include <locale.h>
 #include "Platform.h"
+#include "Enemy.h"
+#include "Bullet.h"
 #include <gdiplus.h>
 #include <time.h>
 #include <vector>
 #include <sstream>
-#include <atlstr.h>
-#include <atlconv.h>
-#include <atlbase.h>
 #define FON_IMAGE L"image/fon.jpg"
 #define WIDTH 450
 #define HEIGHT 700
 #define GRAVITY_Y 1
 #define START_COUNT_PLATFORMS 12
+#define TYPE_MONSTER 3
 
-//#pragma execution_character_set("utf-8")
+
 #pragma comment(lib, "gdiplus.lib")
 using namespace Gdiplus;
 using namespace std;
@@ -27,18 +27,24 @@ void initPlatforms(vector<Platform*>& platforms);
 UINT movePlatform(HWND hWnd);
 void generateNewPlatforms();
 void setScore();
-string UTF8_to_CP1251(string const& utf8);
+void generateMonster(int area);
+UINT moveFlyMonster(HWND hWnd);
+UINT showShootImage(HWND hWnd);
+UINT moveBullet(HWND hWnd);
 
 
 MSG msg;
 HWND hwnd;
 WNDCLASS wc;
 RECT fonRect;
-Hero hero(225.0f, 600.0f, 50.0f, 48.0f, L"image/hero.png");
+Hero hero(225.0f, 600.0f, 50.0f, 48.0f, L"image/hero.png",L"image/hero_shoot.png");
 vector<Platform*> platforms;
+vector<Enemy*> enemyes;
+vector<Bullet*> bullets;
 Platform platform(150.0f, 350.0f, 68.0f, 14.0f, L"image/platform.png");
 Platform* platformJumped;
-//Hero entity(225.0f, 600.0f, 50.0f, 48.0f, NULL);
+Enemy enemy(150.0f, 350.0f, 68.0f, 14.0f, L"image/enemy_2.png", 2, false);
+
 
 int CALLBACK wWinMain(HINSTANCE hInstance, HINSTANCE prev, PWSTR szCmdLine, int nCndShow) {
 	GdiplusStartupInput gdiplusStartupInput; // Связано с загрузкой картинки
@@ -90,7 +96,12 @@ HFONT font2 = CreateFont(30, 18, 0, 0, 700, FALSE, FALSE, FALSE, DEFAULT_CHARSET
 static char text[2] = { ' ','\0' };
 const CHAR* score = "";
 unsigned long currentScore = 0;
+unsigned long monsterScore = 500;
 string stringScore;
+RECT rect1;
+float shotX;
+float shotY;
+
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message)
@@ -99,6 +110,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		initFon(fonRect);
 		initPlatforms(platforms);
 		SetTimer(hWnd, 1, 15, (TIMERPROC) &moveHero);
+		rect1.left = 50;
+		rect1.right = 100;
+		rect1.top = 200;
+		rect1.bottom = 300;
 		break;
 	case WM_SIZE:
 		sx = LOWORD(lParam);
@@ -122,8 +137,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		for (int i = 0; i < platforms.size(); i++) {
 			DrawImage(hdcMem, platforms[i]->getRect(), platforms[i]->getImage());
 		}
-		
-		DrawImage(hdcMem, hero.getRect(), hero.getImage());
+		if (hero.getIsShoot()) {
+			DrawImage(hdcMem, hero.getRect(), hero.getShootImage());
+		}
+		else {
+			DrawImage(hdcMem, hero.getRect(), hero.getImage());
+		}
+
+		for (int i = 0; i < enemyes.size(); i++) {
+			DrawImage(hdcMem, enemyes[i]->getRect(), enemyes[i]->getImage());
+		}
+
+		for (int i = 0; i < bullets.size(); i++) {
+			DrawImage(hdcMem, bullets[i]->getRect(), bullets[i]->getImage());
+		}
+		//DrawImage(hdcMem, rect,L"image/1.png");
 
 		font = (HFONT)SelectObject(hdcMem, font2);
 		SetTextColor(hdcMem, RGB(255, 0, 0));
@@ -136,7 +164,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 
 		
 
-	//	FillRect(hdcMem, &entity.getRect(), (HBRUSH)GetStockObject(BLACK_BRUSH));
 		
 
 
@@ -171,6 +198,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 					hero.moveRect(mouseX, hero.getY());
 				}
 			}
+		}
+		break;
+	case WM_LBUTTONDOWN:
+		if (hero.getIsLive() && !hero.getIsShoot()) {
+			hero.setIsShoot(true);
+			SetTimer(hWnd, 4, 300, (TIMERPROC)&showShootImage);
+			bullets.push_back(new Bullet(hero.getX() + (hero.getWidth() / 2), hero.getY(), 25, 18, L"image/bullet.png"));
+			SetTimer(hWnd, 5, 1, (TIMERPROC)&moveBullet);
 		}
 		break;
 	case WM_ERASEBKGND:
@@ -297,6 +332,10 @@ UINT movePlatform(HWND hWnd) {
 		for (int i = 0; i < platforms.size(); i++) {
 			platforms[i]->setY((platforms[i]->getY() + 10));
 		}
+
+		for (int i = 0; i < enemyes.size(); i++) {
+			enemyes[i]->setY((enemyes[i]->getY() + 10));
+		}
 		
 		InvalidateRect(hwnd, NULL, FALSE);
 	}
@@ -305,6 +344,12 @@ UINT movePlatform(HWND hWnd) {
 			if (platforms[i]->getY() + platforms[i]->getHeight() >= HEIGHT) {
 				delete platforms[i];
 				platforms.erase(platforms.begin() + i);
+			}
+		}
+		for (int i = 0; i < enemyes.size(); i++) {
+			if (enemyes[i]->getY() >= HEIGHT) {
+				delete enemyes[i];
+				enemyes.erase(enemyes.begin() + i);
 			}
 		}
 		KillTimer(hWnd, 2);
@@ -320,24 +365,43 @@ void generateNewPlatforms() {						// int y = min + (rand() % ((max - min) + 1))
 	int count = (int)area / 100;
 	int minH = -100; // min = HEIGHT - 180 max = HEIGHT
 	int maxH = 0;
+
+	if (currentScore > monsterScore && area >= 100) {
+		monsterScore += 500;
+		generateMonster(area);
+	}
+	
 	
 	if (area >= 100) {
 		for (int i = 0; i < count + 1; i++) {
 			int x = rand() % (int)(WIDTH - platform.getWidth());
 			int y = minH + rand() % (int)((maxH - minH) + 1);
-			platforms.push_back(new Platform(x, y, 68.0f, 15.0f, L"image/platform.png"));
-			if (minH - 100 < area) {
-				minH = -area;
-				maxH = minH;
+			bool isNorm = true;
+			for (int i = 0; i < enemyes.size(); i++) {
+				if (x > enemyes[i]->getX() - platform.getWidth() && x < enemyes[i]->getX() + enemyes[i]->getWidth() && y > enemyes[i]->getY() - 10 && y < enemyes[i]->getY() + enemyes[i]->getHeight()) {
+					isNorm = false;
+					break;
+				}
 			}
-			else if (minH == -area) {
-				minH = -area;
-				maxH = 0;
+			if (isNorm) {
+				platforms.push_back(new Platform(x, y, 68.0f, 15.0f, L"image/platform.png"));
+				if (minH - 100 < area) {
+					minH = -area;
+					maxH = minH;
+				}
+				else if (minH == -area) {
+					minH = -area;
+					maxH = 0;
+				}
+				else {
+					maxH = minH;
+					minH = minH - 100;
+				}
 			}
 			else {
-				maxH = minH;
-				minH = minH - 100;
+				i--;
 			}
+			
 		}
 	}
 	else{
@@ -352,21 +416,99 @@ void setScore() {
 	score = stringScore.c_str();
 }
 
-
-string UTF8_to_CP1251(string const& utf8)
-{
-	if (!utf8.empty())
+void generateMonster(int area) {// int y = min + (rand() % ((max - min) + 1));
+	int x = rand() % (int)(WIDTH - platform.getWidth());
+	int y = -area + rand() % (int)((0 + area) + 1);
+	int type = 1 + (rand() % (TYPE_MONSTER - 1 + 1));
+	switch (type)
 	{
-		int wchlen = MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), utf8.size(), NULL, 0);
-		if (wchlen > 0 && wchlen != 0xFFFD)
-		{
-			std::vector<wchar_t> wbuf(wchlen);
-			MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), utf8.size(), &wbuf[0], wchlen);
-			std::vector<char> buf(wchlen);
-			WideCharToMultiByte(1251, 0, &wbuf[0], wchlen, &buf[0], wchlen, 0, 0);
+	case 1:
+		enemyes.push_back(new Enemy(x, y, 100, 60, L"image/enemy_1.png", 2, false));
+		break;
+	case 2:
+		enemyes.push_back(new Enemy(x, y, 60, 80, L"image/enemy_2.png", 1, true));
+		SetTimer(hwnd, 3, 30, (TIMERPROC)&moveFlyMonster);
+		break;
+	case 3:
+		enemyes.push_back(new Enemy(x, y, 100, 100, L"image/enemy_3.png", 3, false));
+		break;
+	}
+}
 
-			return std::string(&buf[0], wchlen);
+UINT moveFlyMonster(HWND hWnd) {
+	for (int i = 0; i < enemyes.size(); i++) {
+		if (enemyes[i]->getIsCanFly()) {
+			if (enemyes[i]->getDir() == 1) {
+				if (enemyes[i]->getX() <= WIDTH - enemyes[i]->getWidth() - 5) {
+					enemyes[i]->setX(enemyes[i]->getX() + 10);
+				}
+				else {
+					enemyes[i]->setDir(-1);
+				}
+				
+			}
+			else {
+				if (enemyes[i]->getX() >= 2) {
+					enemyes[i]->setX(enemyes[i]->getX() - 10);
+				}
+				else {
+					enemyes[i]->setDir(1);
+				}
+			}
 		}
 	}
-	return std::string();
+	return 0;
+}
+
+UINT showShootImage(HWND hWnd) {
+	hero.setIsShoot(false);
+	KillTimer(hWnd, 4);
+	return 0;
+}
+
+UINT moveBullet(HWND hWnd) {
+	for (int i = 0; i < bullets.size(); i++) {
+		if (bullets[i]->getY() + bullets[i]->getHeight() < 0) {
+			delete bullets[i];
+			bullets.erase(bullets.begin() + i);
+		}
+	}
+	for (int i = 0; i < bullets.size(); i++) {
+		bullets[i]->setY(bullets[i]->getY() - 20);
+	}
+	bool isHit = false;
+	for (int bullet = 0; bullet < bullets.size(); bullet++) {
+		for (int x = bullets[bullet]->getX(); x < bullets[bullet]->getX() + bullets[bullet]->getWidth(); x++) {
+			for (int enemy = 0; enemy < enemyes.size(); enemy++) {
+				if (x >= enemyes[enemy]->getX() && x <= enemyes[enemy]->getX() + enemyes[enemy]->getWidth()) {
+					for (int y = bullets[bullet]->getY(); y < bullets[bullet]->getY() + bullets[bullet]->getHeight(); y++) {
+						if (y >= enemyes[enemy]->getY() && y <= enemyes[enemy]->getY() + enemyes[enemy]->getHeight()) {
+							isHit = true;
+							enemyes[enemy]->decrementLife();
+							delete bullets[bullet];
+							bullets.erase(bullets.begin() + bullet);
+							if (enemyes[enemy]->getCountLife() <= 0) {
+								delete enemyes[enemy];
+								enemyes.erase(enemyes.begin() + enemy);
+							}
+							break;
+						}
+					}
+				}
+				if (isHit) {
+					break;
+				}
+			}
+			if (isHit) {
+				break;
+			}
+		}
+		if (isHit) {
+			break;
+		}
+	}
+	if (bullets.size() == 0) {
+		KillTimer(hWnd, 5);
+	}
+	return 0;
 }
