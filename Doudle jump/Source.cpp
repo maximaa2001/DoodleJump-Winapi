@@ -7,12 +7,13 @@
 #include <time.h>
 #include <vector>
 #include <sstream>
+#include <fstream>
 #define FON_IMAGE L"image/fon.jpg"
 #define WIDTH 450
 #define HEIGHT 700
 #define GRAVITY_Y 1
 #define START_COUNT_PLATFORMS 12
-#define TYPE_MONSTER 3
+#define FILE_SCORE "file.txt"
 
 
 #pragma comment(lib, "gdiplus.lib")
@@ -32,6 +33,9 @@ UINT moveFlyMonster(HWND hWnd);
 UINT showShootImage(HWND hWnd);
 UINT moveBullet(HWND hWnd);
 void heroLose(HWND hWnd);
+void setMaxValue();
+void serialize();
+void deserialize();
 
 
 MSG msg;
@@ -97,12 +101,16 @@ float sx, sy;
 HFONT font;
 HFONT font2 = CreateFont(30, 18, 0, 0, 700, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, VARIABLE_PITCH, L"Times New Roman");
 const CHAR* score = "";
+const CHAR* scoreMax = "";
 unsigned long currentScore = 0;
-unsigned long monsterScore = 500;
+unsigned long monsterScore = 2000;
+unsigned long maxValue = 0;
 string stringScore;
+string stringMax;
 float shotX;
 float shotY;
 bool isJumpedMonster = false;
+bool isPause = false;
 
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
@@ -112,7 +120,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		initFon(fonRect);
 		initPlatforms(platforms);
 		SetTimer(hWnd, 1, 15, (TIMERPROC) &moveHero);
-		
 		break;
 	case WM_SIZE:
 		sx = LOWORD(lParam);
@@ -157,13 +164,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 			TextOutA(hdcMem, 10, 0, score, strlen(score));
 		}
 		else {
-			TextOutA(hdcMem, WIDTH / 2 - 100, HEIGHT / 2 - 40, "Score: ", 7);
-			TextOutA(hdcMem, WIDTH/2 + 20, HEIGHT/2 - 40, score, strlen(score));
-			TextOutA(hdcMem, WIDTH / 2 - 140, HEIGHT / 2  , "PRESS SPACE", 11);
+			if (currentScore > maxValue) {
+				serialize();
+				maxValue = currentScore;
+			}
+			setMaxValue();
+			TextOutA(hdcMem, WIDTH / 2 - 90, HEIGHT / 2 - 40, "Score: ", 7);
+			TextOutA(hdcMem, WIDTH/2 + 30, HEIGHT/2 - 40, score, strlen(score));
+			TextOutA(hdcMem, WIDTH / 2 - 140, HEIGHT / 2 , "Max Score: ", 11);
+			TextOutA(hdcMem, WIDTH / 2 + 60, HEIGHT / 2, scoreMax, strlen(scoreMax));
+			TextOutA(hdcMem, WIDTH / 2 - 140, HEIGHT / 2 + 40 , "PRESS SPACE", 11);
+			
+			
 		}
-
-	
-
 
 		/*
 		 конец двойной буферизации
@@ -218,14 +231,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 				hero.setSpeed(21);
 				hero.setDir(1);
 				hero.setIsMovePlatform(false);
-				//hero.setIsMovePlatform(true);
+				currentScore = 0;
+				monsterScore = 2000;
 	
 				Platform platform(210, HEIGHT-40, 68.0f, 14.0f, L"image/platform.png");
-			//	platformJumped = nullptr;
-		//	platformJumped = &platform;
+
 				initPlatforms(platforms);
 				SetTimer(hWnd, 1, 15, (TIMERPROC)&moveHero);
 				InvalidateRect(hWnd, NULL, FALSE);
+				isPause = false;
+			}
+			break;
+		case VK_ESCAPE:
+			if (isPause) {
+				SetTimer(hWnd, 1, 15, (TIMERPROC)&moveHero);
+				isPause = false;
+			}
+			else {
+				KillTimer(hWnd, 1);
+				isPause = true;
 			}
 			break;
 		default:
@@ -266,34 +290,43 @@ void initPlatforms(vector<Platform*>& platforms) {// int y = min + (rand() % ((m
 	for (int i = 0; i < START_COUNT_PLATFORMS; i++) {
 		int x = rand() % (int) (WIDTH - platform.getWidth());
 		int y = minH + rand() % (int)((maxH - minH) + 1);
-		platforms.push_back(new Platform(x, y, 68.0f, 15.0f, L"image/platform.png"));
-		if (minH - 100 < 0) {
-			minH = 0;
-			maxH = HEIGHT;
+		bool isNorm = true;
+		for (int i = 0; i < platforms.size(); i++) {
+			if (x > platforms[i]->getX() - platforms[i]->getWidth() && x < platforms[i]->getX() + platforms[i]->getWidth() && y > platforms[i]->getY() - 10 && y < platforms[i]->getY() + platforms[i]->getHeight()) {
+				isNorm = false;
+				break;
+			}
+		}
+		if (isNorm) {
+			platforms.push_back(new Platform(x, y, 68.0f, 15.0f, L"image/platform.png"));
+			if (minH - 100 < 0) {
+				minH = 0;
+				maxH = HEIGHT;
+			}
+			else {
+				maxH = minH;
+				minH = minH - 100;
+			}
 		}
 		else {
-			maxH = minH;
-			minH = minH - 100;
+			i--;
 		}
+		
 	}
 }
 
 UINT moveHero(HWND hWnd) {
-	if (hero.getY() > HEIGHT) {
-		heroLose(hWnd);
-	}
 	if (hero.getDir() == 1) {
-	bool isHit = false;
-	for (int enemy = 0; enemy < enemyes.size(); enemy++) {
+		bool isHit = false;
+		for (int enemy = 0; enemy < enemyes.size(); enemy++) {
 			for (int heroX = hero.getX(); heroX < hero.getX() + hero.getHeight(); heroX++) {
-				if (heroX >= enemyes[enemy]->getX() && heroX <= enemyes[enemy]->getX() + enemyes[enemy]->getWidth()) {
+				if (heroX >= enemyes[enemy]->getX() + 10 && heroX <= enemyes[enemy]->getX() + enemyes[enemy]->getWidth() - 10) {
 					for (int heroY = hero.getY(); heroY < hero.getY() + hero.getHeight(); heroY++) {
-						if (heroY >= enemyes[enemy]->getY() && heroY <= enemyes[enemy]->getY() + enemyes[enemy]->getHeight()) {
+						if (heroY >= enemyes[enemy]->getY() && heroY <= enemyes[enemy]->getY() + enemyes[enemy]->getHeight() - 20) {
 							isHit = true;
 							heroLose(hWnd);
 							break;
 						}
-
 					}
 				}
 				if (isHit) {
@@ -304,7 +337,7 @@ UINT moveHero(HWND hWnd) {
 				break;
 			}
 		
-	}
+		}
 	}
 	else {
 		bool isHit = false;
@@ -321,6 +354,7 @@ UINT moveHero(HWND hWnd) {
 						isHit = true;
 						delete enemyes[enemy];
 						enemyes.erase(enemyes.begin() + enemy);
+						currentScore += 500;
 						break;
 ;					}
 				}
@@ -332,7 +366,6 @@ UINT moveHero(HWND hWnd) {
 	}
 	if (hero.getIsLive()) {
 		if (hero.getDir() == 1) {
-
 			if (hero.getSpeed() == 0) {
 				hero.setDir(-1);
 				if (hero.getIsMovePlatform()) {
@@ -341,9 +374,7 @@ UINT moveHero(HWND hWnd) {
 					generateNewPlatforms(hWnd);
 					if (hero.getIsLive()) {
 						SetTimer(hWnd, 2, 15, (TIMERPROC)&movePlatform);
-
 					}
-
 				}
 			}
 			else {
@@ -357,7 +388,6 @@ UINT moveHero(HWND hWnd) {
 		else
 		{
 			for (int i = 0; i < platforms.size(); i++) {
-
 				if (hero.getX() > platforms[i]->getX() + 8 && hero.getX() < platforms[i]->getX() + platforms[i]->getWidth() - 8
 					&& hero.getY() + hero.getHeight() >= platforms[i]->getY() - 8 && hero.getY() + hero.getHeight() <= platforms[i]->getY() + 10) {
 
@@ -392,11 +422,11 @@ UINT moveHero(HWND hWnd) {
 					hero.setSpeed(hero.getSpeed() + GRAVITY_Y);
 
 				}
-
-
 			}
-
 		}
+	}
+	if (hero.getY() > HEIGHT) {
+		heroLose(hWnd);
 	}
 	InvalidateRect(hWnd, NULL, FALSE);
 	return 0;
@@ -438,9 +468,6 @@ UINT movePlatform(HWND hWnd) {
 					enemyes[i]->setY((enemyes[i]->getY() + 10));
 				}
 			}
-
-			
-
 			InvalidateRect(hWnd, NULL, FALSE);
 		}
 		else {
@@ -457,7 +484,7 @@ UINT movePlatform(HWND hWnd) {
 				}
 			}
 			KillTimer(hWnd, 2);
-			if (hero.getIsLive()) {
+			if (hero.getIsLive() && !isPause) {
 				SetTimer(hWnd, 1, 15, (TIMERPROC)&moveHero);
 			}
 		}
@@ -473,7 +500,7 @@ void generateNewPlatforms(HWND hWnd) {						// int y = min + (rand() % ((max - m
 	float area;
 	if (isJumpedMonster) {
 		platf_y = coordinateJumpedEnemyY;
-		area = HEIGHT - platf_y - 40;
+		area = HEIGHT - platf_y - 100;
 
 	}
 	else {
@@ -485,7 +512,7 @@ void generateNewPlatforms(HWND hWnd) {						// int y = min + (rand() % ((max - m
 	int maxH = 0;
 
 	if (currentScore > monsterScore && area >= 100) {
-		monsterScore += 500;
+		monsterScore += 2000;
 		generateMonster(area, hWnd);
 	}
 	
@@ -497,6 +524,13 @@ void generateNewPlatforms(HWND hWnd) {						// int y = min + (rand() % ((max - m
 			bool isNorm = true;
 			for (int i = 0; i < enemyes.size(); i++) {
 				if (x > enemyes[i]->getX() - platform.getWidth() && x < enemyes[i]->getX() + enemyes[i]->getWidth() && y > enemyes[i]->getY() - 10 && y < enemyes[i]->getY() + enemyes[i]->getHeight()) {
+					isNorm = false;
+					break;
+				}
+			}
+
+			for (int i = 0; i < platforms.size(); i++) {
+				if (x > platforms[i]->getX() - platforms[i]->getWidth() && x < platforms[i]->getX() + platforms[i]->getWidth() && y > platforms[i]->getY() - 10 && y < platforms[i]->getY() + platforms[i]->getHeight()) {
 					isNorm = false;
 					break;
 				}
@@ -536,20 +570,28 @@ void setScore() {
 	score = stringScore.c_str();
 }
 
+void setMaxValue() {
+	stringMax = to_string(maxValue);
+	scoreMax = stringMax.c_str();
+}
+
 void generateMonster(int area, HWND hWnd) {// int y = min + (rand() % ((max - min) + 1));
 	int x = rand() % (int)(WIDTH - platform.getWidth());
 	int y = -area + rand() % (int)((0 + area) + 1);
-	int type = 1 + (rand() % (TYPE_MONSTER - 1 + 1));
+	int type = 1 + (rand() % (6 - 1 + 1));
 	switch (type)
 	{
 	case 1:
+	case 2:
 		enemyes.push_back(new Enemy(x, y, 100, 60, L"image/enemy_1.png", 2, false));
 		break;
-	case 2:
+	case 3:
+	case 4:
+	case 5:
 		enemyes.push_back(new Enemy(x, y, 60, 80, L"image/enemy_2.png", 1, true));
 		SetTimer(hWnd, 3, 30, (TIMERPROC)&moveFlyMonster);
 		break;
-	case 3:
+	case 6:
 		enemyes.push_back(new Enemy(x, y, 100, 100, L"image/enemy_3.png", 3, false));
 		break;
 	}
@@ -614,6 +656,7 @@ UINT moveBullet(HWND hWnd) {
 							if (enemyes[enemy]->getCountLife() <= 0) {
 								delete enemyes[enemy];
 								enemyes.erase(enemyes.begin() + enemy);
+								currentScore += 500;
 							}
 							break;
 						}
@@ -654,6 +697,24 @@ void heroLose(HWND hWnd) {
 		delete  bullets[i];
 	}
 	bullets.clear();
-	currentScore = 0;
-	monsterScore = 500;
+	deserialize();
+}
+
+void serialize() {
+	ofstream fout;
+	fout.open(FILE_SCORE, ofstream::out);
+
+	if (fout.is_open()) {
+		fout.write((char*)&currentScore, sizeof(unsigned long));
+	}
+
+	fout.close();
+}
+void deserialize() {
+	ifstream fin;
+	fin.open(FILE_SCORE);
+	if (fin.is_open()) {
+		fin.read((char*)&maxValue, sizeof(unsigned long));  
+	}
+	fin.close();
 }
